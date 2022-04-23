@@ -38,7 +38,6 @@ const Table = () => {
             <td>{planet.created}</td>
             <td>{planet.edited}</td>
             <td>{planet.url}</td>
-
           </tr>
         ))}
       </tbody>
