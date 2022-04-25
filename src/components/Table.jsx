@@ -1,10 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { StarContexto } from '../contexto/Context';
 
 const Table = () => {
-  const data = useContext(StarContexto);
-  const [filteredPlanets, setFilteredPlanets] = useState([]);
-  useEffect(() => setFilteredPlanets(data), [data]);
+  const { data, filterPlanets } = useContext(StarContexto);
   return data.length === 0 ? (
     <div>Carregando...</div>
   ) : (
@@ -23,7 +21,7 @@ const Table = () => {
         </tr>
       </thead>
       <tbody>
-        {filteredPlanets.map((planet, index) => (
+        {filterPlanets.map((planet, index) => (
           <tr key={ index }>
             <td>{planet.name}</td>
             <td>{planet.rotation_period}</td>
