@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useMemo } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 export const StarContexto = createContext(null);
@@ -17,11 +17,11 @@ export const StarProvider = ({ children }) => {
   useEffect(() => {
     fetchPlanetas();
   }, []);
-  const store = useMemo(() => ({
+  const store = {
     data,
     filterPlanets,
     setFilterPlanets,
-  }), [data, filterPlanets]);
+  };
   return (
     <StarContexto.Provider value={ store }>{children}</StarContexto.Provider>
   );

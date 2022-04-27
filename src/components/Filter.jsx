@@ -22,24 +22,33 @@ function Filter() {
     ),
   ), [data, filter, setFilterPlanets]);
 
-  const onChange = ({ target: { name, value } }) => {
-    setCurrentFilters((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    setFilter((prevState) => ({
-      ...prevState,
-      filterByNumericValues: [
-        ...prevState.filterByNumericValues,
-        currentFilters,
-      ],
+  const onSubmit = () => {
+    switch (currentFilters.comparison) {
+    case 'maior que':
+      return setFilterPlanets(
+        data.filter(
+          (item) => Number(item[currentFilters.column])
+              > Number(currentFilters.value),
+        ),
+      );
+    case 'menor que':
+      return setFilterPlanets(
+        data.filter(
+          (item) => Number(item[currentFilters.column])
+              < Number(currentFilters.value),
+        ),
+      );
+    case 'igual a':
+      return setFilterPlanets(
+        data.filter(
+          (item) => Number(item[currentFilters.column])
+              === Number(currentFilters.value),
+        ),
+      );
+    default:
+      return undefined;
     }
-    ));
-  };
-
+  }; // fim da função onSubmit.
   return (
     <>
       <section>
@@ -55,44 +64,61 @@ function Filter() {
 
       </section>
       <section>
-        <form>
-          <select
-            data-testid="column-filter"
-            name="column-filter"
-            onChange={ onChange }
-            defaultValue="population"
-          >
-            <option value="population">population</option>
-            <option value="orbital_period">orbital_period</option>
-            <option value="diameter">diameter</option>
-            <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option>
-          </select>
-          <select
-            data-testid="comparison-filter"
-            name="comparison-filter"
-            onChange={ onChange }
-            defaultValue="maior que"
-          >
-            <option value="maior que">maior que</option>
-            <option value="menor que">menor que</option>
-            <option value="igual a">igual a</option>
-          </select>
-          <input
-            data-testid="value-filter"
-            type="number"
-            name="value-filter"
-            onChange={ onChange }
-            defaultValue="0"
-          />
-          <button
-            type="submit"
-            data-testid="button-filter"
-            onClick={ onSubmit }
-          >
-            Filtrar
-          </button>
-        </form>
+
+        <select
+          data-testid="column-filter"
+          name="column-filter"
+          onChange={ (event) => setCurrentFilters({
+            ...currentFilters,
+            column: event.target.value,
+          }) }
+          defaultValue="population"
+        >
+          <option value="population">population</option>
+          <option value="orbital_period">orbital_period</option>
+          <option value="diameter">diameter</option>
+          <option value="rotation_period">rotation_period</option>
+          <option value="surface_water">surface_water</option>
+        </select>
+        <select
+          data-testid="comparison-filter"
+          name="comparison-filter"
+          onChange={ (event) => setCurrentFilters({
+            ...currentFilters,
+            comparison: event.target.value,
+          }) }
+          defaultValue="maior que"
+        >
+          <option value="maior que">maior que</option>
+          <option value="menor que">menor que</option>
+          <option value="igual a">igual a</option>
+        </select>
+        <input
+          data-testid="value-filter"
+          type="number"
+          name="value-filter"
+          onChange={ (event) => setCurrentFilters({
+            ...currentFilters,
+            value: event.target.value,
+          }) }
+          defaultValue="0"
+        />
+        <button
+          type="button"
+          data-testid="button-filter"
+          onClick={ () => {
+            onSubmit();
+            // limpando os selectes
+            setCurrentFilters({
+              column: 'population',
+              comparison: 'maior que',
+              value: 0,
+            });
+          } }
+        >
+          Filtrar
+        </button>
+
       </section>
     </>
   );
