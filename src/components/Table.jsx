@@ -6,7 +6,7 @@ const Table = () => {
   return data.length === 0 ? (
     <div>Carregando...</div>
   ) : (
-    <table>
+    <table className="table table-striped">
       <thead>
         <tr>
           {Object.keys(data[0]).map((key, index) => (
@@ -21,7 +21,7 @@ const Table = () => {
         </tr>
       </thead>
       <tbody>
-        {filterPlanets.map((planet, index) => (
+        {filterPlanets.filter(() => true).map((planet, index) => (
           <tr key={ index }>
             <td>{planet.name}</td>
             <td>{planet.rotation_period}</td>

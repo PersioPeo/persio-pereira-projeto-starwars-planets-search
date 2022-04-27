@@ -36,8 +36,10 @@ function Filter() {
         ...prevState.filterByNumericValues,
         currentFilters,
       ],
-    }));
+    }
+    ));
   };
+
   return (
     <>
       <section>
