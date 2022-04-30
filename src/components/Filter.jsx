@@ -1,19 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { StarContexto } from '../contexto/Context';
 
 function Filter() {
-  const { data, setFilterPlanets } = useContext(StarContexto);
-  const [currentFilters, setCurrentFilters] = useState({
-    column: 'population',
-    comparison: 'maior que',
-    value: 0,
-  });
-  const [filter, setFilter] = useState({
-    filterByName: {
-      name: '',
-    },
-    filterByNumericValues: [],
-  });
+  const { data,
+    setFilterPlanets,
+    filter,
+    setFilter,
+    currentFilters,
+    setCurrentFilters,
+  } = useContext(StarContexto);
+
   useEffect(() => setFilterPlanets(
     data.filter(
       (item) => item.name
@@ -23,32 +19,40 @@ function Filter() {
   ), [data, filter, setFilterPlanets]);
 
   const onSubmit = () => {
-    switch (currentFilters.comparison) {
-    case 'maior que':
-      return setFilterPlanets(
-        data.filter(
-          (item) => Number(item[currentFilters.column])
-              > Number(currentFilters.value),
-        ),
-      );
-    case 'menor que':
-      return setFilterPlanets(
-        data.filter(
-          (item) => Number(item[currentFilters.column])
-              < Number(currentFilters.value),
-        ),
-      );
-    case 'igual a':
-      return setFilterPlanets(
-        data.filter(
-          (item) => Number(item[currentFilters.column])
-              === Number(currentFilters.value),
-        ),
-      );
-    default:
-      return undefined;
-    }
-  }; // fim da função onSubmit.
+    setFilter((ant) => ({
+      ...ant,
+      filterByNumericValues: [...ant.filterByNumericValues, currentFilters],
+    }));
+  };
+  const dataFiltrados = () => {
+    let dataFiltrar = data;
+    filter.filterByNumericValues.forEach((filtro) => {
+      switch (filtro.comparison) {
+      case 'maior que':
+        dataFiltrar = dataFiltrar.filter((planeta) => (
+          Number(planeta[filtro.column]) > Number(filtro.value)
+        ));
+        break;
+      case 'menor que':
+        dataFiltrar = dataFiltrar.filter((planeta) => (
+          Number(planeta[filtro.column]) < Number(filtro.value)
+        ));
+        break;
+      case 'igual a':
+        dataFiltrar = dataFiltrar.filter((planeta) => (
+          Number(planeta[filtro.column]) === Number(filtro.value)
+        ));
+        break;
+      default:
+        break;
+      }
+      setFilterPlanets(dataFiltrar);
+    });
+  };
+  useEffect(() => {
+    dataFiltrados();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter.filterByNumericValues]);
   return (
     <>
       <section>
@@ -108,11 +112,12 @@ function Filter() {
           data-testid="button-filter"
           onClick={ () => {
             onSubmit();
+
             // limpando os selectes
             setCurrentFilters({
-              column: 'population',
-              comparison: 'maior que',
-              value: 0,
+              column: '',
+              comparison: '',
+              value: '',
             });
           } }
         >

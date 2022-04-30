@@ -5,6 +5,17 @@ export const StarContexto = createContext(null);
 export const StarProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [filterPlanets, setFilterPlanets] = useState([]);
+  const [filter, setFilter] = useState({
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [],
+  });
+  const [currentFilters, setCurrentFilters] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: '0',
+  });
   const fetchPlanetas = async () => {
     const response = await fetch(
       'https://swapi-trybe.herokuapp.com/api/planets/?format=json',
@@ -21,6 +32,10 @@ export const StarProvider = ({ children }) => {
     data,
     filterPlanets,
     setFilterPlanets,
+    filter,
+    setFilter,
+    currentFilters,
+    setCurrentFilters,
   };
   return (
     <StarContexto.Provider value={ store }>{children}</StarContexto.Provider>
