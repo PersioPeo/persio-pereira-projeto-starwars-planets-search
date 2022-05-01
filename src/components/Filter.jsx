@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StarContexto } from '../contexto/Context';
 
 function Filter() {
@@ -11,6 +11,7 @@ function Filter() {
     columnSelect,
     setColumnSelect,
   } = useContext(StarContexto);
+  const [filtrosSelecionados, setFiltrosSelecionados] = useState([]);
 
   useEffect(() => setFilterPlanets(
     data.filter(
@@ -25,6 +26,7 @@ function Filter() {
       ...ant,
       filterByNumericValues: [...ant.filterByNumericValues, currentFilters],
     }));
+    setColumnSelect(columnSelect.filter((item) => item !== currentFilters.column));
   };
   const dataFiltrados = () => {
     let dataFiltrar = data;
@@ -55,6 +57,17 @@ function Filter() {
     dataFiltrados();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter.filterByNumericValues]);
+  useEffect(() => {
+    const novosFiltrosSelecionados = filter.filterByNumericValues
+      .map((item) => item.column);
+    setCurrentFilters({
+      column: columnSelect.filter((item) => !filtrosSelecionados.includes(item))[0],
+      comparison: 'maior que',
+      value: '0',
+    });
+    setFiltrosSelecionados(novosFiltrosSelecionados);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter.filterByNumericValues]);
   return (
     <>
       <section>
@@ -78,9 +91,9 @@ function Filter() {
             ...currentFilters,
             column: event.target.value,
           }) }
-          defaultValue="population"
+
         >
-          {columnSelect.filter().map((item, key) => (
+          {columnSelect.filter((option) => !filtrosSelecionados.includes(option)).map((item, key) => (
             <option
               key={ key }
               value={ item }
@@ -120,9 +133,9 @@ function Filter() {
 
             // limpando os selectes
             setCurrentFilters({
-              column: '',
-              comparison: '',
-              value: '',
+              column: 'population',
+              comparison: 'maior que',
+              value: '0',
             });
           } }
         >
