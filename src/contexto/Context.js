@@ -11,6 +11,14 @@ export const StarProvider = ({ children }) => {
     },
     filterByNumericValues: [],
   });
+  const [columnSelect, setColumnSelect] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
+
   const [currentFilters, setCurrentFilters] = useState({
     column: 'population',
     comparison: 'maior que',
@@ -36,6 +44,8 @@ export const StarProvider = ({ children }) => {
     setFilter,
     currentFilters,
     setCurrentFilters,
+    columnSelect,
+    setColumnSelect,
   };
   return (
     <StarContexto.Provider value={ store }>{children}</StarContexto.Provider>
