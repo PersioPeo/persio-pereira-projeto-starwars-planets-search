@@ -93,14 +93,11 @@ function Filter() {
           }) }
 
         >
-          {columnSelect.filter((option) => !filtrosSelecionados.includes(option)).map((item, key) => (
-            <option
-              key={ key }
-              value={ item }
-            >
-              {item}
-            </option>
-          ))}
+          {columnSelect
+            .filter((option) => !filtrosSelecionados
+              .includes(option))
+            .map((item, key) => (<option key={ key } value={ item }>{ item }</option>
+            ))}
         </select>
         <select
           data-testid="comparison-filter"
