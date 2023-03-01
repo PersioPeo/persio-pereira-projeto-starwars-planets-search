@@ -12,3 +12,15 @@ Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua cr
 - quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
 - quais arquivos/pastas foram desenvolvidos pela Trybe.
 -->
+
+# Habilidades
+
+Foi realizando nesse projeto, a criação de um React App, utilizando a Context API do React para gerenciar estado:
+
+* Utilizar a _Context API_ do **React** para gerenciar estado.
+* Utilizar o _React Hook useState_;
+* Utilizar o _React Hook useContext_;
+* Utilizar o _React Hook useEffect_;
+* Criar _React Hooks_ customizados.
+
+---
